@@ -59,4 +59,21 @@ router.post("/login", (req, res) =>{
   });
 });
 
+router.delete("/deleteAccount/:username", (req, res) =>{
+  User.findOne({username : req.params.username})
+  .then(data => {
+    if(data)
+    {
+      User.deleteOne({username : data.username})
+      .then(newData => {
+        res.json({result : true, update : newData});
+      });
+    }
+    else
+    {
+      res.json({result : false, error : "Couldn't find user in database"});
+    }
+  });
+})
+
 module.exports = router;
