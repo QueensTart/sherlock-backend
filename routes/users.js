@@ -50,7 +50,7 @@ router.post("/login", (req, res) =>{
   .then(data => {
     if(data && bcrypt.compareSync(req.body.password, data.password)) 
     {
-      res.json({result : true, connectedUser : data.username});
+      res.json({result : true, connectedUser : data});
     }
     else
     {
