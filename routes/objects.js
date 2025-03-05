@@ -44,7 +44,7 @@ router.get("/findUserObject/:owner", (req, res) => {
     .then(data => {
         if(data)
         {
-            res.json({result : true, objectList : data});
+            res.json({result : true, objectList : {objects : data}});
         }
         else
         {
