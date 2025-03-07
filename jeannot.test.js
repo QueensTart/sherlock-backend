@@ -9,3 +9,9 @@ it("GET/objects/findUserObject/:owner", async () => {
   expect(res.statusCode).toBe(200);
   expect(res.body.result).toBe(true);
 });
+it("GET/objects/findUserObject/:owner - invalid owner", async () => {
+  const res = await request(app).get("/objects/findUserObject/invalidOwnerId");
+
+  expect(res.statusCode).toBe(404);
+  expect(res.body.result).toBe(false);
+});
