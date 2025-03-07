@@ -55,6 +55,19 @@ router.get("/findUserObject/:owner", (req, res) => {
   });
 });
 
+router.get("/findObject/:owner/:name", (req, res) => {
+  Object.findOne({ owner: req.params.owner, name: req.params.name }).then(
+    (data) => {
+      if (data) {
+        res.json({ result: true, object: data });
+      } 
+      else {
+        res.json({
+          result: false, error: "This object does not exist in the database",});
+      }
+    });
+});
+
 //Update specified Object's name, description, picture(?), loaned status
 router.put("/updateObject/:owner/:name", (req, res) => {
   Object.findOne({ owner: req.params.owner, name: req.params.name }).then(
@@ -175,11 +188,10 @@ router.post("/upload", async (req, res) => {
   if (!resultMove) {
     const resultCloudinary = await cloudinary.uploader.upload(photoPath);
     res.json({ result: true, url: resultCloudinary.secure_url });
+    fs.unlinkSync(photoPath);
   } else {
     res.json({ result: false, error: resultMove });
   }
-
-  fs.unlinkSync(photoPath);
 });
 
 module.exports = router;
