@@ -44,7 +44,7 @@ router.post("/addObject", (req, res) => {
 //Find all the Objects belonging to a specified user
 router.get("/findUserObject/:owner", (req, res) => {
   Object.find({ owner: req.params.owner }).then((data) => {
-    if (data) {
+    if (data.length !== 0) {
       res.json({ result: true, objectList: { objects: data } });
     } else {
       res.json({
