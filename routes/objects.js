@@ -69,29 +69,31 @@ router.get("/findObject/:owner/:name", (req, res) => {
 });
 
 //Update specified Object's name, description, picture(?), loaned status
-router.put("/updateObject/:owner/:name", (req, res) => {
-  Object.findOne({ owner: req.params.owner, name: req.params.name }).then(
+router.put("/updateObject/:owner/:_id", (req, res) => {
+  Object.findOne({ owner: req.params.owner, _id: req.params._id }).then(
     (data) => {
       if (data) {
         Object.updateOne(
-          { name: data.name },
+          { _id: data._id },
           {
             name: req.body.name,
             picture: req.body.picture,
             description: req.body.description,
             loanedTo: req.body.loanedTo,
           }
-        ).then((data) => {
-          res.json({ result: true, update: data });
-        });
-      } else {
+        )
+        .then(() =>
+        Object.findOne({owner: req.params.owner, _id: req.params._id})
+          .then(newData => res.json({result : true, object : newData})));
+      } 
+      else {
         res.json({
           result: false,
           error: "This object is not in the database",
         });
       }
     }
-  );
+  )
 });
 
 //Share specified Object with another user
