@@ -8,7 +8,7 @@ const {checkBody} = require("../modules/checkBody");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 
-/* GET users listing. */
+
 router.post("/signup", (req, res) => {
   if(!checkBody(req.body, ["username", "password"]))
   {
@@ -59,6 +59,20 @@ router.post("/login", (req, res) =>{
   });
 });
 
+router.get("/findUser/:username", (req, res) => {
+    User.findOne({username : req.params.username})
+    .then(data => {
+      if(data)
+      {
+        res.json({result : true, user : data.username});
+      }
+      else
+      {
+        res.json({result : false, error : "Couldn't find user in database"});
+      }
+    });
+});
+
 router.delete("/deleteAccount/:username", (req, res) =>{
   User.findOne({username : req.params.username})
   .then(data => {
@@ -74,8 +88,6 @@ router.delete("/deleteAccount/:username", (req, res) =>{
       res.json({result : false, error : "Couldn't find user in database"});
     }
   });
-})
-
-//Donde esta el puto
+});
 
 module.exports = router;
