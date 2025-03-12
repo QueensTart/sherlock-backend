@@ -73,6 +73,20 @@ router.get("/findUser/:username", (req, res) => {
     });
 });
 
+router.get("/findUserByID/:_id", (req, res) => {
+  User.findOne({_id : req.params._id})
+  .then(data => {
+    if(data)
+    {
+      res.json({result : true, user : data.username});
+    }
+    else
+    {
+      res.json({result : false, error : "Couldn't find user in database"});
+    }
+  });
+});
+
 router.delete("/deleteAccount/:username", (req, res) =>{
   User.findOne({username : req.params.username})
   .then(data => {
