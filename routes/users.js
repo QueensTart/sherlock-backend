@@ -76,7 +76,6 @@ router.post("/changePassword", async (req, res) => {
         .status(404)
         .json({ result: false, message: "Utilisateur non trouvé" });
     }
-
     // Vérification l'ancien mot de passe
     const isMatch = bcrypt.compareSync(req.body.oldPassword, user.password); // comparaison des mots de passe
     if (!isMatch) {
@@ -84,7 +83,6 @@ router.post("/changePassword", async (req, res) => {
         .status(400)
         .json({ result: false, message: "Ancien mot de passe incorrect" });
     }
-
     // Mettre à jour le mot de passe
     const hash = bcrypt.hashSync(req.body.newPassword, 10);
     user.password = hash;
@@ -94,6 +92,20 @@ router.post("/changePassword", async (req, res) => {
   } catch (error) {
     res.status(500).json({ result: false, message: "Erreur serveur" });
   }
+});
+
+router.get("/findUserByID/:_id", (req, res) => {
+  User.findOne({_id : req.params._id})
+  .then(data => {
+    if(data)
+    {
+      res.json({result : true, user : data.username});
+    }
+    else
+    {
+      res.json({result : false, error : "Couldn't find user in database"});
+    }
+  });
 });
 
 router.delete("/deleteAccount/:username", (req, res) => {

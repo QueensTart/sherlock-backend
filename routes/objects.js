@@ -55,6 +55,21 @@ router.get("/findUserObject/:owner", (req, res) => {
   });
 });
 
+//Find all the Objects shared with specified user
+router.get("/findSharedObjects/:sharedWith", (req, res) => {
+  Object.find({ sharedWith : req.params.sharedWith}).then(data => {
+    if(data)
+    {
+      res.json({result : true, sharedList : data});
+    }
+    else
+    {
+      res.json({result : false, error : "This user is not in the database"});
+    }
+  })
+});
+
+//Find one Object belonging to a specified user
 router.get("/findObject/:owner/:name", (req, res) => {
   Object.findOne({ owner: req.params.owner, name: req.params.name }).then(
     (data) => {
